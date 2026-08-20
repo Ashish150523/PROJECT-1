@@ -3,11 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>Welcome</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(
+                circle at center,
+                #182848 0%,
+                #0f172a 45%,
+                #020617 100%
+            );
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+
+        .welcome-page {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Background glow */
+        .welcome-page::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: #8b5cf6;
+            filter: blur(180px);
+            opacity: 0.18;
+            border-radius: 50%;
+            top: -200px;
+            left: -150px;
+        }
+
+        .welcome-page::after {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: #06b6d4;
+            filter: blur(160px);
+            opacity: 0.12;
+            border-radius: 50%;
+            bottom: -150px;
+            right: -100px;
+        }
+
+        .content {
+            width: min(1200px, 95%);
+            text-align: center;
+            z-index: 2;
+        }
+
+        /* YOUR PARTICLE TEXT CSS */
+        .particle-text {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            min-height: 240px;
+            overflow: hidden;
+            touch-action: none;
+            isolation: isolate;
+        }
+
+        .particle-text__canvas {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .particle-text__sr {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            animation: fadeUp 1.5s ease;
+        }
+
+        .description {
+            max-width: 650px;
+            margin: 25px auto;
+            color: #94a3b8;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            color: white;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-secondary {
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.12);
+            transform: translateY(-4px);
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 30px;
+            color: #64748b;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .particle-text {
+                min-height: 180px;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .description {
+                font-size: 0.9rem;
+                padding: 0 15px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h1>hello welcome
-        
-    </h1>
+
+    <main class="welcome-page">
+
+        <div class="content">
+
+            <div class="particle-text" aria-label="WELCOME">
+                <canvas
+                    id="particleCanvas"
+                    class="particle-text__canvas"
+                    aria-hidden="true">
+                </canvas>
+
+                <span class="particle-text__sr">
+                    WELCOME
+                </span>
+            </div>
+
+            <p class="subtitle">
+                EXPERIENCE SOMETHING AMAZING
+            </p>
+
+            <p class="description">
+                Welcome to our platform. Move your mouse over the particles
+                and watch the welcome message come alive.
+            </p>
+
+            <div class="buttons">
+                <a href="index2.html" class="btn btn-primary">
+                    Get Started
+                </a>
+
+                <a href="#about" class="btn btn-secondary">
+                    Learn More
+                </a>
+            </div>
+
+        </div>
+
+        <div class="hint">
+            MOVE YOUR MOUSE OVER THE TEXT ✦
+        </div>
+
+    </main>
+
+
+    <script>
+        const canvas = document.getElementById("particleCanvas");
+        const container = document.querySelector(".particle-text");
+        const ctx = canvas.getContext("2d");
+
+        let particles = [];
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 100
+        };
+
+        function resizeCanvas() {
+            const rect = container.getBoundingClientRect();
+
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            createParticles();
+        }
+
+
+        function createParticles() {
+
+            particles = [];
+
+            const offscreenCanvas = document.createElement("canvas");
+            const offCtx = offscreenCanvas.getContext("2d");
+
+            offscreenCanvas.width = canvas.width;
+            offscreenCanvas.height = canvas.height;
+
+            let fontSize = Math.min(canvas.width * 0.16, 150);
+
+            if (canvas.width < 600) {
+                fontSize = canvas.width * 0.13;
+            }
+
+            offCtx.fillStyle = "white";
+            offCtx.textAlign = "center";
+            offCtx.textBaseline = "middle";
+
+            offCtx.font = `900 ${fontSize}px Arial`;
+
+            offCtx.fillText(
+                "WELCOME",
+                canvas.width / 2,
+                canvas.height / 2
+            );
+
+            const imageData = offCtx.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            const density = 5;
+
+            for (let y = 0; y < canvas.height; y += density) {
+
+                for (let x = 0; x < canvas.width; x += density) {
+
+                    const index = (y * canvas.width + x) * 4;
+
+                    if (imageData.data[index + 3] > 128) {
+
+                        particles.push({
+                            x: x + (Math.random() - 0.5) * 250,
+                            y: y + (Math.random() - 0.5) * 250,
+
+                            targetX: x,
+                            targetY: y,
+
+                            size: Math.random() * 2 + 1,
+
+                            speed: Math.random() * 0.08 + 0.04,
+
+                            color: Math.random() > 0.5
+                                ? "#8b5cf6"
+                                : "#06b6d4"
+                        });
+                    }
+                }
+            }
+        }
+
+
+        function animate() {
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            particles.forEach(particle => {
+
+                let dx = particle.targetX - particle.x;
+                let dy = particle.targetY - particle.y;
+
+                particle.x += dx * particle.speed;
+                particle.y += dy * particle.speed;
+
+
+                if (mouse.x !== null) {
+
+                    let mouseDx = particle.x - mouse.x;
+                    let mouseDy = particle.y - mouse.y;
+
+                    let distance = Math.sqrt(
+                        mouseDx * mouseDx +
+                        mouseDy * mouseDy
+                    );
+
+                    if (distance < mouse.radius) {
+
+                        let force =
+                            (mouse.radius - distance) /
+                            mouse.radius;
+
+                        particle.x +=
+                            (mouseDx / distance) *
+                            force * 15;
+
+                        particle.y +=
+                            (mouseDy / distance) *
+                            force * 15;
+                    }
+                }
+
+
+                ctx.fillStyle = particle.color;
+
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = particle.color;
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    particle.x,
+                    particle.y,
+                    particle.size,
+                    0,
+                    Math.PI * 2
+                );
+
+                ctx.fill();
+
+                ctx.shadowBlur = 0;
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+
+        canvas.addEventListener("mousemove", event => {
+
+            const rect = canvas.getBoundingClientRect();
+
+            mouse.x = event.clientX - rect.left;
+            mouse.y = event.clientY - rect.top;
+        });
+
+
+        canvas.addEventListener("mouseleave", () => {
+
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+
+        canvas.addEventListener("click", () => {
+
+            particles.forEach(particle => {
+
+                particle.x =
+                    particle.targetX +
+                    (Math.random() - 0.5) * 300;
+
+                particle.y =
+                    particle.targetY +
+                    (Math.random() - 0.5) * 300;
+            });
+        });
+
+
+        window.addEventListener("resize", resizeCanvas);
+
+        resizeCanvas();
+        animate();
+    </script>
+
 </body>
 </html>
