@@ -1,227 +1,154 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Register & Login</title>
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <link rel="stylesheet" href="style.css">
-</head>
-
 <body>
 
-    <!-- SIGN UP -->
-    <div class="container" id="signup" style="display:none;">
+    <div class="pixel-swap" id="pixelSwap">
 
-        <h1 class="form-title">Register</h1>
+        <!-- SIGN UP -->
+        <div class="container pixel-swap__layer" id="signup">
 
-        <form id="signupForm">
+            <h1 class="form-title">Register</h1>
 
-            <div class="input-group">
-                <i class="fas fa-user"></i>
+            <form id="signupForm">
 
-                <input
-                    type="text"
-                    name="fName"
-                    id="fName"
-                    placeholder="First Name"
-                    required
-                >
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
 
-                <label for="fName">First Name</label>
-            </div>
+                    <input type="text" id="fName" placeholder="First Name" required>
+                    <label for="fName">First Name</label>
+                </div>
 
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
 
-            <div class="input-group">
-                <i class="fas fa-user"></i>
+                    <input type="text" id="lName" placeholder="Last Name" required>
+                    <label for="lName">Last Name</label>
+                </div>
 
-                <input
-                    type="text"
-                    name="lName"
-                    id="lName"
-                    placeholder="Last Name"
-                    required
-                >
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
 
-                <label for="lName">Last Name</label>
-            </div>
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                    <label for="signupEmail">Email</label>
+                </div>
 
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
 
-            <div class="input-group">
-                <i class="fas fa-envelope"></i>
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                    <label for="signupPassword">Password</label>
+                </div>
 
-                <input
-                    type="email"
-                    name="signupEmail"
-                    id="signupEmail"
-                    placeholder="Email"
-                    required
-                >
+                <input type="submit" class="btn" value="Sign Up">
 
-                <label for="signupEmail">Email</label>
-            </div>
+            </form>
 
+            <p class="or">----------or----------</p>
 
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-
-                <input
-                    type="password"
-                    name="signupPassword"
-                    id="signupPassword"
-                    placeholder="Password"
-                    required
-                >
-
-                <label for="signupPassword">Password</label>
-            </div>
-
-
-            <input
-                type="submit"
-                class="btn"
-                value="Sign Up"
-                name="signUp"
-            >
-
-        </form>
-
-
-        <p class="or">
-            ----------or--------
-        </p>
-
-
-        <div class="icons">
-            <i class="fab fa-google"></i>
-            <i class="fab fa-facebook"></i>
-        </div>
-
-
-        <div class="links">
-            <p>Already Have Account ?</p>
-
-            <button type="button" id="signInButton">
-                Sign In
-            </button>
-        </div>
-
-    </div>
-
-
-
-    <!-- SIGN IN -->
-    <div class="container" id="signIn">
-
-        <h1 class="form-title">Sign In</h1>
-
-        <form id="signInForm">
-
-            <div class="input-group">
-
-                <i class="fas fa-envelope"></i>
-
-                <input
-                    type="email"
-                    name="email"
-                    id="signInEmail"
-                    placeholder="Email"
-                    required
-                >
-
-                <label for="signInEmail">Email</label>
-
-            </div>
-
-
-            <div class="input-group">
-
-                <i class="fas fa-lock"></i>
-
-                <input
-                    type="password"
-                    name="password"
-                    id="signInPassword"
-                    placeholder="Password"
-                    required
-                >
-
-                <label for="signInPassword">Password</label>
-
-            </div>
-
-
-            <p class="recover">
-                <a href="#">Recover Password</a>
-            </p>
-
-
-            <input
-                type="submit"
-                class="btn"
-                value="Sign In"
-                name="signIn"
-            >
-
-        </form>
-
-
-        <p class="or">
-            ----------or--------
-        </p>
-
-
-        <div class="icons">
-
-            <a
-                href="https://myaccount.google.com/"
-                aria-label="Sign in with Google"
-                class="icon-link"
-            >
+            <div class="icons">
                 <i class="fab fa-google"></i>
-            </a>
-
-
-            <a
-                href="#"
-                aria-label="Sign in with Facebook"
-                class="icon-link"
-            >
                 <i class="fab fa-facebook"></i>
-            </a>
+            </div>
+
+            <div class="links">
+                <p>Already Have Account?</p>
+
+                <button type="button" id="signInButton">
+                    Sign In
+                </button>
+            </div>
 
         </div>
 
 
-        <div class="links">
+        <!-- SIGN IN -->
+        <div class="container pixel-swap__layer active" id="signIn">
 
-            <p>Don't have account yet?</p>
+            <h1 class="form-title">Sign In</h1>
 
-            <button type="button" id="signUpButton">
-                Sign Up
-            </button>
+            <form id="signInForm">
+
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        id="signInEmail"
+                        placeholder="Email"
+                        required
+                    >
+
+                    <label for="signInEmail">Email</label>
+                </div>
+
+
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="signInPassword"
+                        placeholder="Password"
+                        required
+                    >
+
+                    <label for="signInPassword">Password</label>
+                </div>
+
+
+                <p class="recover">
+                    <a href="#">Recover Password</a>
+                </p>
+
+
+                <input
+                    type="submit"
+                    class="btn"
+                    value="Sign In"
+                >
+
+            </form>
+
+
+            <p class="or">----------or----------</p>
+
+
+            <div class="icons">
+
+                <a href="https://myaccount.google.com/" class="icon-link">
+                    <i class="fab fa-google"></i>
+                </a>
+
+                <a href="#" class="icon-link">
+                    <i class="fab fa-facebook"></i>
+                </a>
+
+            </div>
+
+
+            <div class="links">
+
+                <p>Don't have an account yet?</p>
+
+                <button type="button" id="signUpButton">
+                    Sign Up
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
+
+    <!-- Pixel animation -->
+    <div class="pixel-swap__grid" id="pixelGrid"></div>
 
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-
-    <!-- Your JavaScript -->
     <script src="script.js"></script>
     <script src="mail.js"></script>
 
 </body>
-</html>
