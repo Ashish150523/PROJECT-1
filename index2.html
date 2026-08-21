@@ -13,193 +13,301 @@
             box-sizing: border-box;
         }
 
+        html,
         body {
-            min-height: 100vh;
-            background: radial-gradient(
-                circle at center,
-                #182848 0%,
-                #0f172a 45%,
-                #020617 100%
-            );
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #000;
+            color: white;
         }
+
+        /* ================================
+           INFINITE GRID MENU CANVAS
+        ================================= */
+
+        #infinite-grid-menu-canvas {
+            cursor: grab;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            outline: none;
+            display: block;
+            touch-action: none;
+        }
+
+        #infinite-grid-menu-canvas:active {
+            cursor: grabbing;
+        }
+
+        /* ================================
+           PAGE
+        ================================= */
 
         .welcome-page {
-            min-height: 100vh;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             position: relative;
-        }
-
-        /* Background glow */
-        .welcome-page::before {
-            content: "";
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: #8b5cf6;
-            filter: blur(180px);
-            opacity: 0.18;
-            border-radius: 50%;
-            top: -200px;
-            left: -150px;
-        }
-
-        .welcome-page::after {
-            content: "";
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: #06b6d4;
-            filter: blur(160px);
-            opacity: 0.12;
-            border-radius: 50%;
-            bottom: -150px;
-            right: -100px;
-        }
-
-        .content {
-            width: min(1200px, 95%);
-            text-align: center;
-            z-index: 2;
-        }
-
-        /* YOUR PARTICLE TEXT CSS */
-        .particle-text {
-            position: relative;
-            display: block;
             width: 100%;
-            height: 100%;
-            min-height: 240px;
+            height: 100vh;
             overflow: hidden;
-            touch-action: none;
-            isolation: isolate;
+            background:
+                radial-gradient(circle at 50% 50%,
+                    #20104a 0%,
+                    #0b1022 45%,
+                    #000 100%);
         }
 
-        .particle-text__canvas {
+        /* Dark overlay */
+
+        .overlay {
             position: absolute;
             inset: 0;
-            display: block;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
+            z-index: 2;
+            pointer-events: none;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0, 0, 0, 0.78) 0%,
+                    rgba(0, 0, 0, 0.15) 50%,
+                    rgba(0, 0, 0, 0.55) 100%
+                );
         }
 
-        .particle-text__sr {
+        /* ================================
+           LEFT WELCOME CONTENT
+        ================================= */
+
+        .welcome-content {
             position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #cbd5e1;
-            margin-top: 10px;
-            letter-spacing: 2px;
-            animation: fadeUp 1.5s ease;
-        }
-
-        .description {
+            z-index: 5;
+            left: 8%;
+            top: 50%;
+            transform: translateY(-50%);
             max-width: 650px;
-            margin: 25px auto;
-            color: #94a3b8;
-            font-size: 1rem;
-            line-height: 1.7;
+            pointer-events: none;
         }
 
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 14px 32px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: 0.3s ease;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-            color: white;
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.5);
-        }
-
-        .btn-secondary {
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.12);
-            transform: translateY(-4px);
-        }
-
-        .hint {
-            position: absolute;
-            bottom: 30px;
-            color: #64748b;
+        .small-title {
+            color: #a78bfa;
             font-size: 0.8rem;
-            letter-spacing: 1px;
-            animation: pulse 2s infinite;
+            letter-spacing: 5px;
+            margin-bottom: 25px;
+            font-weight: bold;
         }
 
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .welcome-content h1 {
+            font-size: clamp(3.5rem, 8vw, 8rem);
+            line-height: 0.9;
+            font-weight: 900;
+            letter-spacing: -5px;
+            margin-bottom: 30px;
         }
 
-        @keyframes pulse {
+        .welcome-content h1 span {
+            display: block;
+            color: transparent;
+            -webkit-text-stroke: 2px #8b5cf6;
+        }
+
+        .welcome-description {
+            max-width: 500px;
+            color: #b4b4c8;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 35px;
+        }
+
+        /* ================================
+           START BUTTON
+        ================================= */
+
+        .start-button {
+            pointer-events: auto;
+            border: none;
+            background: #5227ff;
+            color: white;
+            padding: 17px 30px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .start-button span {
+            margin-left: 20px;
+            font-size: 1.3rem;
+        }
+
+        .start-button:hover {
+            background: white;
+            color: #5227ff;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(82, 39, 255, 0.5);
+        }
+
+        /* ================================
+           ACTIVE FACE TITLE
+        ================================= */
+
+        .face-title {
+            user-select: none;
+            position: absolute;
+            z-index: 10;
+            font-weight: 900;
+            font-size: 3rem;
+            left: 1.6em;
+            top: 50%;
+        }
+
+        .face-title {
+            position: absolute;
+            top: 50%;
+            transform: translate(20%, -50%);
+        }
+
+        .face-title.active {
+            opacity: 1;
+            transform: translate(20%, -50%);
+            pointer-events: auto;
+            transition: 0.5s ease;
+        }
+
+        .face-title.inactive {
+            pointer-events: none;
+            opacity: 0;
+            transition: 0.1s ease;
+        }
+
+        /* ================================
+           FACE DESCRIPTION
+        ================================= */
+
+        .face-description {
+            user-select: none;
+            position: absolute;
+            z-index: 10;
+            max-width: 10ch;
+            top: 50%;
+            font-size: 1.2rem;
+            right: 1%;
+            transform: translate(0, -50%);
+        }
+
+        .face-description.active {
+            opacity: 1;
+            transform: translate(-90%, -50%);
+            pointer-events: auto;
+            transition: 0.5s ease;
+        }
+
+        .face-description.inactive {
+            pointer-events: none;
+            transform: translate(-60%, -50%);
+            opacity: 0;
+            transition: 0.1s ease;
+        }
+
+        /* ================================
+           ROUND ACTION BUTTON
+        ================================= */
+
+        .action-button {
+            position: absolute;
+            left: 50%;
+            z-index: 10;
+            width: 60px;
+            height: 60px;
+            display: grid;
+            place-items: center;
+            background: #5227ff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 5px solid #000;
+        }
+
+        .action-button-icon {
+            user-select: none;
+            position: relative;
+            color: #fff;
+            top: 2px;
+            font-size: 26px;
+        }
+
+        .action-button.active {
+            bottom: 3.8em;
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+            transition: 0.5s ease;
+        }
+
+        .action-button.inactive {
+            bottom: -80px;
+            transform: translateX(-50%) scale(0);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.1s ease;
+        }
+
+        /* ================================
+           BOTTOM DRAG HINT
+        ================================= */
+
+        .drag-hint {
+            position: absolute;
+            z-index: 8;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #aaa;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            pointer-events: none;
+            animation: floatHint 2s infinite ease-in-out;
+        }
+
+        @keyframes floatHint {
             0%, 100% {
-                opacity: 0.4;
+                transform: translateX(-50%) translateY(0);
+                opacity: 0.5;
             }
 
             50% {
+                transform: translateX(-50%) translateY(7px);
                 opacity: 1;
             }
         }
 
-        @media (max-width: 600px) {
-            .particle-text {
-                min-height: 180px;
+        @media (max-width: 1500px) {
+            .face-title,
+            .face-description {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .welcome-content {
+                left: 30px;
+                right: 30px;
+                top: 42%;
             }
 
-            .subtitle {
-                font-size: 0.9rem;
+            .welcome-content h1 {
+                letter-spacing: -2px;
             }
 
-            .description {
-                font-size: 0.9rem;
-                padding: 0 15px;
+            .welcome-description {
+                font-size: 0.95rem;
+            }
+
+            .small-title {
+                font-size: 0.65rem;
+                letter-spacing: 3px;
             }
         }
     </style>
@@ -207,243 +315,678 @@
 
 <body>
 
-    <main class="welcome-page">
+    <div class="welcome-page">
 
-        <div class="content">
+        <!-- INTERACTIVE CANVAS -->
+        <canvas id="infinite-grid-menu-canvas"></canvas>
 
-            <div class="particle-text" aria-label="WELCOME">
-                <canvas
-                    id="particleCanvas"
-                    class="particle-text__canvas"
-                    aria-hidden="true">
-                </canvas>
+        <!-- DARK OVERLAY -->
+        <div class="overlay"></div>
 
-                <span class="particle-text__sr">
-                    WELCOME ASHISH
-                </span>
-            </div>
+        <!-- MAIN CONTENT -->
+        <div class="welcome-content">
 
-            <p class="subtitle">
-                EXPERIENCE SOMETHING AMAZING
+            <p class="small-title">
+                ✦ WELCOME TO THE FUTURE ✦
             </p>
 
-            <p class="description">
-                Welcome to our platform. Move your mouse over the particles
-                and watch the welcome message come alive.
+            <h1>
+                YOUR JOURNEY
+                <span>STARTS HERE</span>
+            </h1>
+
+            <p class="welcome-description">
+                Drag the interactive image sphere and explore a world
+                of possibilities. Your journey starts here.
             </p>
 
-            <div class="buttons">
-                <a href="index2.html" class="btn btn-primary">
-                    Get Started
-                </a>
-
-                <a href="#about" class="btn btn-secondary">
-                    Learn More
-                </a>
-            </div>
+            <button class="start-button" onclick="goNext()">
+                GET STARTED
+                <span>→</span>
+            </button>
 
         </div>
 
-        <div class="hint">
-            MOVE YOUR MOUSE OVER THE TEXT ✦
+        <!-- ACTIVE ITEM TITLE -->
+        <h2 id="faceTitle" class="face-title active">
+            WELCOME
+        </h2>
+
+        <!-- ACTIVE ITEM DESCRIPTION -->
+        <p id="faceDescription" class="face-description active">
+            Explore the experience
+        </p>
+
+        <!-- ROUND BUTTON -->
+        <button
+            id="actionButton"
+            class="action-button active"
+            onclick="goNext()"
+        >
+            <span class="action-button-icon">↗</span>
+        </button>
+
+        <!-- HINT -->
+        <div class="drag-hint">
+            DRAG THE SPHERE TO EXPLORE
         </div>
 
-    </main>
+    </div>
 
 
     <script>
-        const canvas = document.getElementById("particleCanvas");
-        const container = document.querySelector(".particle-text");
+
+        /* ==========================================
+           CANVAS SETUP
+        ========================================== */
+
+        const canvas = document.getElementById(
+            "infinite-grid-menu-canvas"
+        );
+
         const ctx = canvas.getContext("2d");
 
-        let particles = [];
-        let mouse = {
-            x: null,
-            y: null,
-            radius: 100
-        };
+        let width;
+        let height;
+
+        let rotationX = 0;
+        let rotationY = 0;
+
+        let velocityX = 0;
+        let velocityY = 0;
+
+        let isDragging = false;
+
+        let previousX = 0;
+        let previousY = 0;
+
+
+        /* ==========================================
+           MENU ITEMS
+        ========================================== */
+
+        const items = [
+            {
+                title: "WELCOME",
+                description: "Explore the experience",
+                image:
+                "https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=600&auto=format"
+            },
+            {
+                title: "DISCOVER",
+                description: "Find something amazing",
+                image:
+                "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=600&auto=format"
+            },
+            {
+                title: "EXPLORE",
+                description: "A new world awaits you",
+                image:
+                "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=600&auto=format"
+            },
+            {
+                title: "CREATE",
+                description: "Turn ideas into reality",
+                image:
+                "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=600&auto=format"
+            },
+            {
+                title: "CONNECT",
+                description: "Connect with the future",
+                image:
+                "https://images.unsplash.com/photo-1500534623283-312aade485b7?q=80&w=600&auto=format"
+            },
+            {
+                title: "START",
+                description: "Begin your journey now",
+                image:
+                "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=600&auto=format"
+            }
+        ];
+
+
+        /* ==========================================
+           LOAD IMAGES
+        ========================================== */
+
+        const loadedImages = [];
+
+        let loadedCount = 0;
+
+        items.forEach((item, index) => {
+
+            const image = new Image();
+
+            image.crossOrigin = "anonymous";
+
+            image.onload = function() {
+                loadedCount++;
+
+                if (loadedCount === items.length) {
+                    animate();
+                }
+            };
+
+            image.src = item.image;
+
+            loadedImages[index] = image;
+        });
+
+
+        /* ==========================================
+           RESIZE CANVAS
+        ========================================== */
 
         function resizeCanvas() {
-            const rect = container.getBoundingClientRect();
 
-            canvas.width = rect.width;
-            canvas.height = rect.height;
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
 
-            createParticles();
+        resizeCanvas();
+
+        window.addEventListener(
+            "resize",
+            resizeCanvas
+        );
+
+
+        /* ==========================================
+           3D ROTATION FUNCTION
+        ========================================== */
+
+        function rotatePoint(x, y, z) {
+
+            /* Rotate around Y axis */
+
+            let cosY = Math.cos(rotationY);
+            let sinY = Math.sin(rotationY);
+
+            let x1 = x * cosY - z * sinY;
+            let z1 = x * sinY + z * cosY;
+
+
+            /* Rotate around X axis */
+
+            let cosX = Math.cos(rotationX);
+            let sinX = Math.sin(rotationX);
+
+            let y1 = y * cosX - z1 * sinX;
+            let z2 = y * sinX + z1 * cosX;
+
+            return {
+                x: x1,
+                y: y1,
+                z: z2
+            };
         }
 
 
-        function createParticles() {
+        /* ==========================================
+           CREATE SPHERE POSITIONS
+        ========================================== */
 
-            particles = [];
+        function getSpherePoints(count) {
 
-            const offscreenCanvas = document.createElement("canvas");
-            const offCtx = offscreenCanvas.getContext("2d");
+            const points = [];
 
-            offscreenCanvas.width = canvas.width;
-            offscreenCanvas.height = canvas.height;
+            const goldenAngle =
+                Math.PI * (3 - Math.sqrt(5));
 
-            let fontSize = Math.min(canvas.width * 0.16, 150);
+            for (let i = 0; i < count; i++) {
 
-            if (canvas.width < 600) {
-                fontSize = canvas.width * 0.13;
+                const y =
+                    1 - (i / (count - 1)) * 2;
+
+                const radius =
+                    Math.sqrt(1 - y * y);
+
+                const theta =
+                    goldenAngle * i;
+
+                const x =
+                    Math.cos(theta) * radius;
+
+                const z =
+                    Math.sin(theta) * radius;
+
+                points.push({
+                    x: x,
+                    y: y,
+                    z: z,
+                    itemIndex: i % items.length
+                });
             }
 
-            offCtx.fillStyle = "white";
-            offCtx.textAlign = "center";
-            offCtx.textBaseline = "middle";
-
-            offCtx.font = `900 ${fontSize}px Arial`;
-
-            offCtx.fillText(
-                "WELCOME",
-                canvas.width / 2,
-                canvas.height / 2
-            );
-
-            const imageData = offCtx.getImageData(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
-            const density = 5;
-
-            for (let y = 0; y < canvas.height; y += density) {
-
-                for (let x = 0; x < canvas.width; x += density) {
-
-                    const index = (y * canvas.width + x) * 4;
-
-                    if (imageData.data[index + 3] > 128) {
-
-                        particles.push({
-                            x: x + (Math.random() - 0.5) * 250,
-                            y: y + (Math.random() - 0.5) * 250,
-
-                            targetX: x,
-                            targetY: y,
-
-                            size: Math.random() * 2 + 1,
-
-                            speed: Math.random() * 0.08 + 0.04,
-
-                            color: Math.random() > 0.5
-                                ? "#8b5cf6"
-                                : "#06b6d4"
-                        });
-                    }
-                }
-            }
+            return points;
         }
 
 
-        function animate() {
+        const spherePoints = getSpherePoints(42);
+
+
+        /* ==========================================
+           UPDATE ACTIVE ITEM
+        ========================================== */
+
+        let currentActiveIndex = 0;
+
+
+        function updateActiveItem(index) {
+
+            if (index === currentActiveIndex) return;
+
+            currentActiveIndex = index;
+
+            const title =
+                document.getElementById("faceTitle");
+
+            const description =
+                document.getElementById("faceDescription");
+
+
+            title.classList.remove("active");
+            title.classList.add("inactive");
+
+            description.classList.remove("active");
+            description.classList.add("inactive");
+
+
+            setTimeout(() => {
+
+                title.textContent =
+                    items[index].title;
+
+                description.textContent =
+                    items[index].description;
+
+
+                title.classList.remove("inactive");
+                title.classList.add("active");
+
+                description.classList.remove("inactive");
+                description.classList.add("active");
+
+            }, 150);
+        }
+
+
+        /* ==========================================
+           DRAW SPHERE
+        ========================================== */
+
+        function drawSphere() {
 
             ctx.clearRect(
                 0,
                 0,
-                canvas.width,
-                canvas.height
+                width,
+                height
             );
 
-            particles.forEach(particle => {
 
-                let dx = particle.targetX - particle.x;
-                let dy = particle.targetY - particle.y;
+            const centerX =
+                width * 0.70;
 
-                particle.x += dx * particle.speed;
-                particle.y += dy * particle.speed;
+            const centerY =
+                height * 0.50;
 
 
-                if (mouse.x !== null) {
+            let radius =
+                Math.min(width, height) * 0.32;
 
-                    let mouseDx = particle.x - mouse.x;
-                    let mouseDy = particle.y - mouse.y;
 
-                    let distance = Math.sqrt(
-                        mouseDx * mouseDx +
-                        mouseDy * mouseDy
+            if (width < 768) {
+
+                radius =
+                    Math.min(width, height) * 0.38;
+            }
+
+
+            const projected = [];
+
+
+            spherePoints.forEach(point => {
+
+                const rotated =
+                    rotatePoint(
+                        point.x,
+                        point.y,
+                        point.z
                     );
 
-                    if (distance < mouse.radius) {
 
-                        let force =
-                            (mouse.radius - distance) /
-                            mouse.radius;
+                const perspective =
+                    1.6 / (2.8 - rotated.z);
 
-                        particle.x +=
-                            (mouseDx / distance) *
-                            force * 15;
 
-                        particle.y +=
-                            (mouseDy / distance) *
-                            force * 15;
-                    }
+                projected.push({
+                    x:
+                        centerX +
+                        rotated.x *
+                        radius *
+                        perspective,
+
+                    y:
+                        centerY +
+                        rotated.y *
+                        radius *
+                        perspective,
+
+                    z: rotated.z,
+
+                    scale: perspective,
+
+                    itemIndex:
+                        point.itemIndex
+                });
+            });
+
+
+            /* Draw back images first */
+
+            projected.sort(
+                (a, b) => a.z - b.z
+            );
+
+
+            let nearest =
+                projected[0];
+
+
+            projected.forEach(point => {
+
+                if (point.z > nearest.z) {
+                    nearest = point;
                 }
 
 
-                ctx.fillStyle = particle.color;
+                const image =
+                    loadedImages[point.itemIndex];
 
-                ctx.shadowBlur = 8;
-                ctx.shadowColor = particle.color;
+
+                const size =
+                    115 *
+                    point.scale;
+
+
+                ctx.save();
+
+
+                /* Fade images at back */
+
+                ctx.globalAlpha =
+                    Math.max(
+                        0.18,
+                        (point.z + 1.5) / 2.5
+                    );
+
 
                 ctx.beginPath();
 
                 ctx.arc(
-                    particle.x,
-                    particle.y,
-                    particle.size,
+                    point.x,
+                    point.y,
+                    size / 2,
                     0,
                     Math.PI * 2
                 );
 
-                ctx.fill();
+                ctx.clip();
 
-                ctx.shadowBlur = 0;
+
+                if (
+                    image &&
+                    image.complete
+                ) {
+
+                    ctx.drawImage(
+                        image,
+                        point.x - size / 2,
+                        point.y - size / 2,
+                        size,
+                        size
+                    );
+
+                } else {
+
+                    ctx.fillStyle =
+                        "#5227ff";
+
+                    ctx.fill();
+                }
+
+
+                ctx.restore();
+
+
+                /* Circle border */
+
+                ctx.save();
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    point.x,
+                    point.y,
+                    size / 2,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.strokeStyle =
+                    point.z > 0
+                        ? "rgba(255,255,255,0.5)"
+                        : "rgba(255,255,255,0.15)";
+
+
+                ctx.lineWidth = 2;
+
+                ctx.stroke();
+
+                ctx.restore();
             });
 
-            requestAnimationFrame(animate);
+
+            /* Update active card */
+
+            updateActiveItem(
+                nearest.itemIndex
+            );
         }
 
 
-        canvas.addEventListener("mousemove", event => {
+        /* ==========================================
+           ANIMATION
+        ========================================== */
 
-            const rect = canvas.getBoundingClientRect();
+        function animate() {
 
-            mouse.x = event.clientX - rect.left;
-            mouse.y = event.clientY - rect.top;
-        });
+            if (!isDragging) {
 
+                rotationY +=
+                    velocityY;
 
-        canvas.addEventListener("mouseleave", () => {
-
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-
-        canvas.addEventListener("click", () => {
-
-            particles.forEach(particle => {
-
-                particle.x =
-                    particle.targetX +
-                    (Math.random() - 0.5) * 300;
-
-                particle.y =
-                    particle.targetY +
-                    (Math.random() - 0.5) * 300;
-            });
-        });
+                rotationX +=
+                    velocityX;
 
 
-        window.addEventListener("resize", resizeCanvas);
+                velocityY *= 0.96;
+                velocityX *= 0.96;
 
-        resizeCanvas();
-        animate();
+
+                if (
+                    Math.abs(velocityY) < 0.0001
+                ) {
+                    velocityY = 0.002;
+                }
+
+            }
+
+
+            drawSphere();
+
+            requestAnimationFrame(
+                animate
+            );
+        }
+
+
+        /* ==========================================
+           MOUSE CONTROLS
+        ========================================== */
+
+        canvas.addEventListener(
+            "mousedown",
+            function(event) {
+
+                isDragging = true;
+
+                previousX =
+                    event.clientX;
+
+                previousY =
+                    event.clientY;
+
+
+                velocityX = 0;
+                velocityY = 0;
+            }
+        );
+
+
+        window.addEventListener(
+            "mousemove",
+            function(event) {
+
+                if (!isDragging) return;
+
+
+                const deltaX =
+                    event.clientX -
+                    previousX;
+
+                const deltaY =
+                    event.clientY -
+                    previousY;
+
+
+                rotationY +=
+                    deltaX * 0.008;
+
+                rotationX +=
+                    deltaY * 0.008;
+
+
+                velocityY =
+                    deltaX * 0.0008;
+
+                velocityX =
+                    deltaY * 0.0008;
+
+
+                previousX =
+                    event.clientX;
+
+                previousY =
+                    event.clientY;
+            }
+        );
+
+
+        window.addEventListener(
+            "mouseup",
+            function() {
+
+                isDragging = false;
+            }
+        );
+
+
+        /* ==========================================
+           TOUCH CONTROLS
+        ========================================== */
+
+        canvas.addEventListener(
+            "touchstart",
+            function(event) {
+
+                isDragging = true;
+
+                const touch =
+                    event.touches[0];
+
+                previousX =
+                    touch.clientX;
+
+                previousY =
+                    touch.clientY;
+            }
+        );
+
+
+        canvas.addEventListener(
+            "touchmove",
+            function(event) {
+
+                if (!isDragging) return;
+
+                const touch =
+                    event.touches[0];
+
+
+                const deltaX =
+                    touch.clientX -
+                    previousX;
+
+                const deltaY =
+                    touch.clientY -
+                    previousY;
+
+
+                rotationY +=
+                    deltaX * 0.008;
+
+                rotationX +=
+                    deltaY * 0.008;
+
+
+                previousX =
+                    touch.clientX;
+
+                previousY =
+                    touch.clientY;
+
+            }
+        );
+
+
+        canvas.addEventListener(
+            "touchend",
+            function() {
+
+                isDragging = false;
+            }
+        );
+
+
+        /* ==========================================
+           BUTTON
+        ========================================== */
+
+        function goNext() {
+
+            /*
+              CHANGE THIS FILE NAME
+              TO THE PAGE YOU WANT
+            */
+
+           window.location.href = "dashboard.html ";
+        }
+
     </script>
+
 
 </body>
 </html>
