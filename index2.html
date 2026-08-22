@@ -1,992 +1,899 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Welcome</title>
+  <title>Welcome</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Montserrat:wght@200;300;400;500;600;700&display=swap');
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #000;
-            color: white;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* ================================
-           INFINITE GRID MENU CANVAS
-        ================================= */
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
 
-        #infinite-grid-menu-canvas {
-            cursor: grab;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: relative;
-            outline: none;
-            display: block;
-            touch-action: none;
-        }
+    body {
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04), transparent 35%),
+        #090909;
 
-        #infinite-grid-menu-canvas:active {
-            cursor: grabbing;
-        }
+      color: white;
+      font-family: "Montserrat", sans-serif;
+    }
 
-        /* ================================
-           PAGE
-        ================================= */
+    /* =================================
+       FULL PAGE
+    ================================= */
 
-        .welcome-page {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            background:
-                radial-gradient(circle at 50% 50%,
-                    #20104a 0%,
-                    #0b1022 45%,
-                    #000 100%);
-        }
+    .welcome-page {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
 
-        /* Dark overlay */
+    /* =================================
+       OPTION WHEEL
+    ================================= */
 
-        .overlay {
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(0, 0, 0, 0.78) 0%,
-                    rgba(0, 0, 0, 0.15) 50%,
-                    rgba(0, 0, 0, 0.55) 100%
-                );
-        }
+    .option-wheel {
+      position: absolute;
+      inset: 0;
 
-        /* ================================
-           LEFT WELCOME CONTENT
-        ================================= */
+      width: 100%;
+      height: 100%;
 
-        .welcome-content {
-            position: absolute;
-            z-index: 5;
-            left: 8%;
-            top: 50%;
-            transform: translateY(-50%);
-            max-width: 650px;
-            pointer-events: none;
-        }
+      overflow: hidden;
 
-        .small-title {
-            color: #a78bfa;
-            font-size: 0.8rem;
-            letter-spacing: 5px;
-            margin-bottom: 25px;
-            font-weight: bold;
-        }
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      outline: none;
+    }
 
-        .welcome-content h1 {
-            font-size: clamp(3.5rem, 8vw, 8rem);
-            line-height: 0.9;
-            font-weight: 900;
-            letter-spacing: -5px;
-            margin-bottom: 30px;
-        }
+    .option-wheel.dragging {
+      cursor: grabbing;
+    }
 
-        .welcome-content h1 span {
-            display: block;
-            color: transparent;
-            -webkit-text-stroke: 2px #8b5cf6;
-        }
+    /* =================================
+       WHEEL OPTIONS
+    ================================= */
 
-        .welcome-description {
-            max-width: 500px;
-            color: #b4b4c8;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 35px;
-        }
+    .option-wheel__item {
+      position: absolute;
+      top: 50%;
+      left: 8vw;
 
-        /* ================================
-           START BUTTON
-        ================================= */
+      border: none;
+      background: transparent;
 
-        .start-button {
-            pointer-events: auto;
-            border: none;
-            background: #5227ff;
-            color: white;
-            padding: 17px 30px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.3s ease;
-            border-radius: 4px;
-        }
+      color: rgba(255,255,255,0.32);
 
-        .start-button span {
-            margin-left: 20px;
-            font-size: 1.3rem;
-        }
+      font-family: "Montserrat", sans-serif;
 
-        .start-button:hover {
-            background: white;
-            color: #5227ff;
-            transform: translateY(-5px);
-            box-shadow: 0 15px 50px rgba(82, 39, 255, 0.5);
-        }
+      font-size: clamp(65px, 8vw, 150px);
+      font-weight: 200;
 
-        /* ================================
-           ACTIVE FACE TITLE
-        ================================= */
+      line-height: 1;
+      letter-spacing: -4px;
 
-        .face-title {
-            user-select: none;
-            position: absolute;
-            z-index: 10;
-            font-weight: 900;
-            font-size: 3rem;
-            left: 1.6em;
-            top: 50%;
-        }
+      white-space: nowrap;
+      text-align: left;
 
-        .face-title {
-            position: absolute;
-            top: 50%;
-            transform: translate(20%, -50%);
-        }
+      padding: 15px 25px;
 
-        .face-title.active {
-            opacity: 1;
-            transform: translate(20%, -50%);
-            pointer-events: auto;
-            transition: 0.5s ease;
-        }
+      cursor: pointer;
 
-        .face-title.inactive {
-            pointer-events: none;
-            opacity: 0;
-            transition: 0.1s ease;
-        }
+      transform-origin: left center;
 
-        /* ================================
-           FACE DESCRIPTION
-        ================================= */
+      will-change: transform, opacity, filter;
 
-        .face-description {
-            user-select: none;
-            position: absolute;
-            z-index: 10;
-            max-width: 10ch;
-            top: 50%;
-            font-size: 1.2rem;
-            right: 1%;
-            transform: translate(0, -50%);
-        }
+      transition:
+        color 0.3s ease,
+        font-weight 0.3s ease,
+        letter-spacing 0.3s ease,
+        text-shadow 0.3s ease;
+    }
 
-        .face-description.active {
-            opacity: 1;
-            transform: translate(-90%, -50%);
-            pointer-events: auto;
-            transition: 0.5s ease;
-        }
+    .option-wheel__item:hover {
+      color: rgba(255,255,255,0.85) !important;
+      letter-spacing: 2px;
+    }
 
-        .face-description.inactive {
-            pointer-events: none;
-            transform: translate(-60%, -50%);
-            opacity: 0;
-            transition: 0.1s ease;
-        }
+    .option-wheel__item.selected {
+      color: #ffffff;
+      font-weight: 600;
 
-        /* ================================
-           ROUND ACTION BUTTON
-        ================================= */
+      text-shadow:
+        0 0 40px rgba(255,255,255,0.12);
+    }
 
-        .action-button {
-            position: absolute;
-            left: 50%;
-            z-index: 10;
-            width: 60px;
-            height: 60px;
-            display: grid;
-            place-items: center;
-            background: #5227ff;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 5px solid #000;
-        }
+    /* =================================
+       ONLY WELCOME HAS GLASS EFFECT
+    ================================= */
 
-        .action-button-icon {
-            user-select: none;
-            position: relative;
-            color: #fff;
-            top: 2px;
-            font-size: 26px;
-        }
+    .welcome-glass {
+      position: absolute;
 
-        .action-button.active {
-            bottom: 3.8em;
-            transform: translateX(-50%) scale(1);
-            opacity: 1;
-            pointer-events: auto;
-            transition: 0.5s ease;
-        }
+      top: 35px;
+      right: 45px;
 
-        .action-button.inactive {
-            bottom: -80px;
-            transform: translateX(-50%) scale(0);
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.1s ease;
-        }
+      z-index: 20;
 
-        /* ================================
-           BOTTOM DRAG HINT
-        ================================= */
+      padding: 14px 22px;
 
-        .drag-hint {
-            position: absolute;
-            z-index: 8;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #aaa;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            pointer-events: none;
-            animation: floatHint 2s infinite ease-in-out;
-        }
+      border-radius: 18px;
 
-        @keyframes floatHint {
-            0%, 100% {
-                transform: translateX(-50%) translateY(0);
-                opacity: 0.5;
-            }
+      /* Glass */
+      background: rgba(255, 255, 255, 0.07);
 
-            50% {
-                transform: translateX(-50%) translateY(7px);
-                opacity: 1;
-            }
-        }
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.18);
 
-        @media (max-width: 1500px) {
-            .face-title,
-            .face-description {
-                display: none;
-            }
-        }
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
 
-        @media (max-width: 768px) {
+      box-shadow:
+        0 10px 35px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.16);
 
-            .welcome-content {
-                left: 30px;
-                right: 30px;
-                top: 42%;
-            }
+      overflow: hidden;
+    }
 
-            .welcome-content h1 {
-                letter-spacing: -2px;
-            }
+    /* Glass shine */
 
-            .welcome-description {
-                font-size: 0.95rem;
-            }
+    .welcome-glass::before {
+      content: "";
 
-            .small-title {
-                font-size: 0.65rem;
-                letter-spacing: 3px;
-            }
-        }
-    </style>
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 50%;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.18),
+          transparent 70%
+        );
+
+      pointer-events: none;
+    }
+
+    .welcome-text {
+      position: relative;
+      z-index: 1;
+
+      font-family: "DM Mono", monospace;
+
+      font-size: 13px;
+      font-weight: 500;
+
+      letter-spacing: 7px;
+      text-transform: uppercase;
+
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* =================================
+       MOBILE
+    ================================= */
+
+    @media (max-width: 800px) {
+
+      .option-wheel__item {
+        left: 30px;
+        font-size: clamp(50px, 11vw, 100px);
+      }
+
+      .welcome-glass {
+        top: 25px;
+        right: 25px;
+
+        padding: 11px 16px;
+
+        border-radius: 14px;
+      }
+
+      .welcome-text {
+        font-size: 10px;
+        letter-spacing: 4px;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
 
-    <div class="welcome-page">
+  <main class="welcome-page">
 
-        <!-- INTERACTIVE CANVAS -->
-        <canvas id="infinite-grid-menu-canvas"></canvas>
+    <!-- =============================
+         OPTION WHEEL
+    ============================== -->
 
-        <!-- DARK OVERLAY -->
-        <div class="overlay"></div>
+    <div
+      class="option-wheel"
+      id="optionWheel"
+      tabindex="0"
+      aria-label="Select an option"
+    ></div>
 
-        <!-- MAIN CONTENT -->
-        <div class="welcome-content">
 
-            <p class="small-title">
-                ✦ WELCOME TO THE FUTURE ✦
-            </p>
+    <!-- =============================
+         ONLY WELCOME HAS GLASS EFFECT
+    ============================== -->
 
-            <h1>
-                YOUR JOURNEY
-                <span>STARTS HERE</span>
-            </h1>
+    <div class="welcome-glass">
 
-            <p class="welcome-description">
-                Drag the interactive image sphere and explore a world
-                of possibilities. Your journey starts here.
-            </p>
-
-            <button class="start-button" onclick="goNext()">
-                GET STARTED
-                <span>→</span>
-            </button>
-
-        </div>
-
-        <!-- ACTIVE ITEM TITLE -->
-        <h2 id="faceTitle" class="face-title active">
-            WELCOME
-        </h2>
-
-        <!-- ACTIVE ITEM DESCRIPTION -->
-        <p id="faceDescription" class="face-description active">
-            Explore the experience
-        </p>
-
-        <!-- ROUND BUTTON -->
-        <button
-            id="actionButton"
-            class="action-button active"
-            onclick="goNext()"
-        >
-            <span class="action-button-icon">↗</span>
-        </button>
-
-        <!-- HINT -->
-        <div class="drag-hint">
-            DRAG THE SPHERE TO EXPLORE
-        </div>
+      <div class="welcome-text">
+        Welcome
+      </div>
 
     </div>
 
+  </main>
 
-    <script>
 
-        /* ==========================================
-           CANVAS SETUP
-        ========================================== */
+  <script>
 
-        const canvas = document.getElementById(
-            "infinite-grid-menu-canvas"
+    /* =================================
+       OPTIONS
+    ================================= */
+
+    const items = [
+      "Ambient",
+      "House",
+      "Techno",
+      "Jazz",
+      "Lo-Fi",
+      "Synthwave"
+    ];
+
+
+    /* =================================
+       PAGES
+    ================================= */
+
+    const pages = {
+      "Ambient": "ambient.html",
+      "House": "house.html",
+      "Techno": "techno.html",
+      "Jazz": "jazz.html",
+      "Lo-Fi": "lofi.html",
+      "Synthwave": "synthwave.html"
+    };
+
+
+    /* =================================
+       SETTINGS
+    ================================= */
+
+    const defaultSelected = 2;
+
+    const spacing = 1.55;
+    const curve = 1.2;
+    const tilt = 5;
+
+    const blur = 2.5;
+    const fade = 0.17;
+
+    const minOpacity = 0.04;
+
+    /*
+      Higher number = smoother/slower movement
+    */
+    const smoothing = 420;
+
+
+    /* =================================
+       GET WHEEL
+    ================================= */
+
+    const wheel =
+      document.getElementById("optionWheel");
+
+
+    /* =================================
+       CREATE OPTIONS
+    ================================= */
+
+    const itemElements = [];
+
+    items.forEach((item, index) => {
+
+      const button =
+        document.createElement("button");
+
+      button.className =
+        "option-wheel__item";
+
+      button.type = "button";
+
+      button.textContent = item;
+
+
+      if (index === defaultSelected) {
+        button.classList.add("selected");
+      }
+
+
+      /* CLICK → OPEN PAGE */
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          if (dragMoved) return;
+
+          window.location.href =
+            pages[item];
+
+        }
+      );
+
+
+      wheel.appendChild(button);
+
+      itemElements.push(button);
+
+    });
+
+
+    /* =================================
+       WHEEL VARIABLES
+    ================================= */
+
+    let position =
+      defaultSelected;
+
+    let target =
+      defaultSelected;
+
+    let selectedIndex =
+      defaultSelected;
+
+    let lastTime =
+      performance.now();
+
+    let animationFrame =
+      null;
+
+    let wheelTimer =
+      null;
+
+
+    /* =================================
+       GET ROW HEIGHT
+    ================================= */
+
+    function getRowHeight() {
+
+      const item =
+        itemElements[0];
+
+      const actualFontSize =
+        parseFloat(
+          getComputedStyle(item).fontSize
         );
 
-        const ctx = canvas.getContext("2d");
+      return actualFontSize * spacing;
 
-        let width;
-        let height;
-
-        let rotationX = 0;
-        let rotationY = 0;
-
-        let velocityX = 0;
-        let velocityY = 0;
-
-        let isDragging = false;
-
-        let previousX = 0;
-        let previousY = 0;
+    }
 
 
-        /* ==========================================
-           MENU ITEMS
-        ========================================== */
+    /* =================================
+       UPDATE SELECTED
+    ================================= */
 
-        const items = [
-            {
-                title: "WELCOME",
-                description: "Explore the experience",
-                image:
-                "https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=600&auto=format"
-            },
-            {
-                title: "DISCOVER",
-                description: "Find something amazing",
-                image:
-                "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=600&auto=format"
-            },
-            {
-                title: "EXPLORE",
-                description: "A new world awaits you",
-                image:
-                "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=600&auto=format"
-            },
-            {
-                title: "CREATE",
-                description: "Turn ideas into reality",
-                image:
-                "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=600&auto=format"
-            },
-            {
-                title: "CONNECT",
-                description: "Connect with the future",
-                image:
-                "https://images.unsplash.com/photo-1500534623283-312aade485b7?q=80&w=600&auto=format"
-            },
-            {
-                title: "START",
-                description: "Begin your journey now",
-                image:
-                "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=600&auto=format"
-            }
-        ];
+    function updateSelected(index) {
 
+      selectedIndex = index;
 
-        /* ==========================================
-           LOAD IMAGES
-        ========================================== */
+      itemElements.forEach(
+        function(element, itemIndex) {
 
-        const loadedImages = [];
+          element.classList.toggle(
+            "selected",
+            itemIndex === index
+          );
 
-        let loadedCount = 0;
-
-        items.forEach((item, index) => {
-
-            const image = new Image();
-
-            image.crossOrigin = "anonymous";
-
-            image.onload = function() {
-                loadedCount++;
-
-                if (loadedCount === items.length) {
-                    animate();
-                }
-            };
-
-            image.src = item.image;
-
-            loadedImages[index] = image;
-        });
-
-
-        /* ==========================================
-           RESIZE CANVAS
-        ========================================== */
-
-        function resizeCanvas() {
-
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
         }
+      );
 
-        resizeCanvas();
+    }
 
-        window.addEventListener(
-            "resize",
-            resizeCanvas
-        );
 
+    /* =================================
+       SET TARGET
+    ================================= */
 
-        /* ==========================================
-           3D ROTATION FUNCTION
-        ========================================== */
+    function setTarget(
+      value,
+      snap = false
+    ) {
 
-        function rotatePoint(x, y, z) {
-
-            /* Rotate around Y axis */
-
-            let cosY = Math.cos(rotationY);
-            let sinY = Math.sin(rotationY);
-
-            let x1 = x * cosY - z * sinY;
-            let z1 = x * sinY + z * cosY;
-
-
-            /* Rotate around X axis */
-
-            let cosX = Math.cos(rotationX);
-            let sinX = Math.sin(rotationX);
-
-            let y1 = y * cosX - z1 * sinX;
-            let z2 = y * sinX + z1 * cosX;
-
-            return {
-                x: x1,
-                y: y1,
-                z: z2
-            };
-        }
-
-
-        /* ==========================================
-           CREATE SPHERE POSITIONS
-        ========================================== */
-
-        function getSpherePoints(count) {
-
-            const points = [];
-
-            const goldenAngle =
-                Math.PI * (3 - Math.sqrt(5));
-
-            for (let i = 0; i < count; i++) {
-
-                const y =
-                    1 - (i / (count - 1)) * 2;
-
-                const radius =
-                    Math.sqrt(1 - y * y);
-
-                const theta =
-                    goldenAngle * i;
-
-                const x =
-                    Math.cos(theta) * radius;
-
-                const z =
-                    Math.sin(theta) * radius;
-
-                points.push({
-                    x: x,
-                    y: y,
-                    z: z,
-                    itemIndex: i % items.length
-                });
-            }
-
-            return points;
-        }
-
-
-        const spherePoints = getSpherePoints(42);
-
-
-        /* ==========================================
-           UPDATE ACTIVE ITEM
-        ========================================== */
-
-        let currentActiveIndex = 0;
-
-
-        function updateActiveItem(index) {
-
-            if (index === currentActiveIndex) return;
-
-            currentActiveIndex = index;
-
-            const title =
-                document.getElementById("faceTitle");
-
-            const description =
-                document.getElementById("faceDescription");
-
-
-            title.classList.remove("active");
-            title.classList.add("inactive");
-
-            description.classList.remove("active");
-            description.classList.add("inactive");
-
-
-            setTimeout(() => {
-
-                title.textContent =
-                    items[index].title;
-
-                description.textContent =
-                    items[index].description;
-
-
-                title.classList.remove("inactive");
-                title.classList.add("active");
-
-                description.classList.remove("inactive");
-                description.classList.add("active");
-
-            }, 150);
-        }
-
-
-        /* ==========================================
-           DRAW SPHERE
-        ========================================== */
-
-        function drawSphere() {
-
-            ctx.clearRect(
-                0,
-                0,
-                width,
-                height
-            );
-
-
-            const centerX =
-                width * 0.70;
-
-            const centerY =
-                height * 0.50;
-
-
-            let radius =
-                Math.min(width, height) * 0.32;
-
-
-            if (width < 768) {
-
-                radius =
-                    Math.min(width, height) * 0.38;
-            }
-
-
-            const projected = [];
-
-
-            spherePoints.forEach(point => {
-
-                const rotated =
-                    rotatePoint(
-                        point.x,
-                        point.y,
-                        point.z
-                    );
-
-
-                const perspective =
-                    1.6 / (2.8 - rotated.z);
-
-
-                projected.push({
-                    x:
-                        centerX +
-                        rotated.x *
-                        radius *
-                        perspective,
-
-                    y:
-                        centerY +
-                        rotated.y *
-                        radius *
-                        perspective,
-
-                    z: rotated.z,
-
-                    scale: perspective,
-
-                    itemIndex:
-                        point.itemIndex
-                });
-            });
-
-
-            /* Draw back images first */
-
-            projected.sort(
-                (a, b) => a.z - b.z
-            );
-
-
-            let nearest =
-                projected[0];
-
-
-            projected.forEach(point => {
-
-                if (point.z > nearest.z) {
-                    nearest = point;
-                }
-
-
-                const image =
-                    loadedImages[point.itemIndex];
-
-
-                const size =
-                    115 *
-                    point.scale;
-
-
-                ctx.save();
-
-
-                /* Fade images at back */
-
-                ctx.globalAlpha =
-                    Math.max(
-                        0.18,
-                        (point.z + 1.5) / 2.5
-                    );
-
-
-                ctx.beginPath();
-
-                ctx.arc(
-                    point.x,
-                    point.y,
-                    size / 2,
-                    0,
-                    Math.PI * 2
-                );
-
-                ctx.clip();
-
-
-                if (
-                    image &&
-                    image.complete
-                ) {
-
-                    ctx.drawImage(
-                        image,
-                        point.x - size / 2,
-                        point.y - size / 2,
-                        size,
-                        size
-                    );
-
-                } else {
-
-                    ctx.fillStyle =
-                        "#5227ff";
-
-                    ctx.fill();
-                }
-
-
-                ctx.restore();
-
-
-                /* Circle border */
-
-                ctx.save();
-
-                ctx.beginPath();
-
-                ctx.arc(
-                    point.x,
-                    point.y,
-                    size / 2,
-                    0,
-                    Math.PI * 2
-                );
-
-
-                ctx.strokeStyle =
-                    point.z > 0
-                        ? "rgba(255,255,255,0.5)"
-                        : "rgba(255,255,255,0.15)";
-
-
-                ctx.lineWidth = 2;
-
-                ctx.stroke();
-
-                ctx.restore();
-            });
-
-
-            /* Update active card */
-
-            updateActiveItem(
-                nearest.itemIndex
-            );
-        }
-
-
-        /* ==========================================
-           ANIMATION
-        ========================================== */
-
-        function animate() {
-
-            if (!isDragging) {
-
-                rotationY +=
-                    velocityY;
-
-                rotationX +=
-                    velocityX;
-
-
-                velocityY *= 0.96;
-                velocityX *= 0.96;
-
-
-                if (
-                    Math.abs(velocityY) < 0.0001
-                ) {
-                    velocityY = 0.002;
-                }
-
-            }
-
-
-            drawSphere();
-
-            requestAnimationFrame(
-                animate
-            );
-        }
-
-
-        /* ==========================================
-           MOUSE CONTROLS
-        ========================================== */
-
-        canvas.addEventListener(
-            "mousedown",
-            function(event) {
-
-                isDragging = true;
-
-                previousX =
-                    event.clientX;
-
-                previousY =
-                    event.clientY;
-
-
-                velocityX = 0;
-                velocityY = 0;
-            }
+      let newValue =
+        Math.min(
+          Math.max(value, 0),
+          items.length - 1
         );
 
 
-        window.addEventListener(
-            "mousemove",
-            function(event) {
-
-                if (!isDragging) return;
-
-
-                const deltaX =
-                    event.clientX -
-                    previousX;
-
-                const deltaY =
-                    event.clientY -
-                    previousY;
+      if (snap) {
+        newValue =
+          Math.round(newValue);
+      }
 
 
-                rotationY +=
-                    deltaX * 0.008;
-
-                rotationX +=
-                    deltaY * 0.008;
+      target = newValue;
 
 
-                velocityY =
-                    deltaX * 0.0008;
-
-                velocityX =
-                    deltaY * 0.0008;
-
-
-                previousX =
-                    event.clientX;
-
-                previousY =
-                    event.clientY;
-            }
+      const index =
+        Math.max(
+          0,
+          Math.min(
+            Math.round(newValue),
+            items.length - 1
+          )
         );
 
 
-        window.addEventListener(
-            "mouseup",
+      if (index !== selectedIndex) {
+        updateSelected(index);
+      }
+
+
+      startAnimation();
+
+    }
+
+
+    /* =================================
+       SMOOTH ANIMATION
+    ================================= */
+
+    function animate(now) {
+
+      const dt =
+        Math.min(
+          (now - lastTime) / 1000,
+          0.05
+        );
+
+      lastTime = now;
+
+
+      /*
+        Exponential smoothing.
+        This makes the wheel smooth
+        on different screen frame rates.
+      */
+
+      const tau =
+        smoothing / 1000;
+
+      const speed =
+        1 -
+        Math.exp(-dt / tau);
+
+
+      let next =
+        position +
+        (target - position) * speed;
+
+
+      const settled =
+        Math.abs(target - next) <
+        0.0005;
+
+
+      if (settled) {
+        next = target;
+      }
+
+
+      position = next;
+
+
+      const rowHeight =
+        getRowHeight();
+
+
+      const tiltRad =
+        (tilt * Math.PI) / 180;
+
+
+      const radius =
+        rowHeight / tiltRad;
+
+
+      /* UPDATE ALL OPTIONS */
+
+      itemElements.forEach(
+        function(element, index) {
+
+          const distance =
+            index - position;
+
+          const absoluteDistance =
+            Math.abs(distance);
+
+
+          const angle =
+            Math.max(
+              -Math.PI / 2,
+              Math.min(
+                Math.PI / 2,
+                distance * tiltRad
+              )
+            );
+
+
+          /* CURVED WHEEL POSITION */
+
+          const y =
+            radius *
+            Math.sin(angle);
+
+
+          const x =
+            -radius *
+            (
+              1 - Math.cos(angle)
+            ) *
+            curve;
+
+
+          const rotation =
+            (angle * 180) /
+            Math.PI;
+
+
+          /* MOVE SMOOTHLY */
+
+          element.style.transform =
+            `translate3d(
+              ${x.toFixed(2)}px,
+              calc(${y.toFixed(2)}px - 50%),
+              0
+            )
+            rotate(${rotation.toFixed(2)}deg)`;
+
+
+          /* OPACITY */
+
+          element.style.opacity =
+            Math.max(
+              minOpacity,
+              1 -
+              absoluteDistance * fade
+            );
+
+
+          /* BLUR */
+
+          element.style.filter =
+            `blur(${(
+              absoluteDistance * blur
+            ).toFixed(2)}px)`;
+
+        }
+      );
+
+
+      /* KEEP ANIMATING UNTIL STOPPED */
+
+      if (!settled) {
+
+        animationFrame =
+          requestAnimationFrame(animate);
+
+      } else {
+
+        animationFrame = null;
+
+      }
+
+    }
+
+
+    /* =================================
+       START ANIMATION
+    ================================= */
+
+    function startAnimation() {
+
+      if (animationFrame !== null) {
+
+        cancelAnimationFrame(
+          animationFrame
+        );
+
+      }
+
+
+      lastTime =
+        performance.now();
+
+
+      animationFrame =
+        requestAnimationFrame(animate);
+
+    }
+
+
+    /* =================================
+       MOUSE WHEEL
+    ================================= */
+
+    wheel.addEventListener(
+      "wheel",
+      function(event) {
+
+        event.preventDefault();
+
+
+        const rowHeight =
+          getRowHeight();
+
+
+        /*
+          Smaller movement gives
+          smoother scrolling.
+        */
+
+        const movement =
+          event.deltaY /
+          (rowHeight * 1.5);
+
+
+        const step =
+          Math.max(
+            -0.8,
+            Math.min(
+              0.8,
+              movement
+            )
+          );
+
+
+        setTarget(
+          target + step,
+          false
+        );
+
+
+        clearTimeout(wheelTimer);
+
+
+        wheelTimer =
+          setTimeout(
             function() {
 
-                isDragging = false;
-            }
+              /* Smooth snap */
+
+              setTarget(
+                target,
+                true
+              );
+
+            },
+            180
+          );
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+    /* =================================
+       DRAG VARIABLES
+    ================================= */
+
+    let dragging = false;
+    let dragMoved = false;
+
+    let startY = 0;
+    let startTarget = 0;
+
+
+    /* =================================
+       START DRAG
+    ================================= */
+
+    wheel.addEventListener(
+      "pointerdown",
+      function(event) {
+
+        dragging = true;
+        dragMoved = false;
+
+        startY =
+          event.clientY;
+
+        startTarget =
+          target;
+
+
+        wheel.classList.add(
+          "dragging"
         );
 
-
-        /* ==========================================
-           TOUCH CONTROLS
-        ========================================== */
-
-        canvas.addEventListener(
-            "touchstart",
-            function(event) {
-
-                isDragging = true;
-
-                const touch =
-                    event.touches[0];
-
-                previousX =
-                    touch.clientX;
-
-                previousY =
-                    touch.clientY;
-            }
-        );
+      }
+    );
 
 
-        canvas.addEventListener(
-            "touchmove",
-            function(event) {
+    /* =================================
+       SMOOTH DRAG
+    ================================= */
 
-                if (!isDragging) return;
+    wheel.addEventListener(
+      "pointermove",
+      function(event) {
 
-                const touch =
-                    event.touches[0];
-
-
-                const deltaX =
-                    touch.clientX -
-                    previousX;
-
-                const deltaY =
-                    touch.clientY -
-                    previousY;
+        if (!dragging) return;
 
 
-                rotationY +=
-                    deltaX * 0.008;
-
-                rotationX +=
-                    deltaY * 0.008;
+        const difference =
+          event.clientY - startY;
 
 
-                previousX =
-                    touch.clientX;
+        if (
+          Math.abs(difference) > 5
+        ) {
 
-                previousY =
-                    touch.clientY;
+          dragMoved = true;
 
-            }
-        );
-
-
-        canvas.addEventListener(
-            "touchend",
-            function() {
-
-                isDragging = false;
-            }
-        );
-
-
-        /* ==========================================
-           BUTTON
-        ========================================== */
-
-        function goNext() {
-
-            /*
-              CHANGE THIS FILE NAME
-              TO THE PAGE YOU WANT
-            */
-
-           window.location.href = "dashboard.html ";
         }
 
-    </script>
 
+        if (dragMoved) {
+
+          const rowHeight =
+            getRowHeight();
+
+
+          /*
+            Lower sensitivity makes
+            dragging smoother.
+          */
+
+          setTarget(
+            startTarget -
+            difference / (rowHeight * 1.15),
+            false
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =================================
+       STOP DRAG
+    ================================= */
+
+    function stopDragging() {
+
+      if (!dragging) return;
+
+
+      dragging = false;
+
+
+      wheel.classList.remove(
+        "dragging"
+      );
+
+
+      if (dragMoved) {
+
+        /*
+          Smoothly snap to nearest option
+        */
+
+        setTarget(
+          target,
+          true
+        );
+
+
+        setTimeout(
+          function() {
+
+            dragMoved = false;
+
+          },
+          180
+        );
+
+      }
+
+    }
+
+
+    wheel.addEventListener(
+      "pointerup",
+      stopDragging
+    );
+
+
+    wheel.addEventListener(
+      "pointercancel",
+      stopDragging
+    );
+
+
+    /* =================================
+       KEYBOARD
+    ================================= */
+
+    wheel.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "ArrowUp" ||
+          event.key === "ArrowLeft"
+        ) {
+
+          event.preventDefault();
+
+          setTarget(
+            Math.round(target) - 1,
+            true
+          );
+
+        }
+
+
+        if (
+          event.key === "ArrowDown" ||
+          event.key === "ArrowRight"
+        ) {
+
+          event.preventDefault();
+
+          setTarget(
+            Math.round(target) + 1,
+            true
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =================================
+       INITIAL START
+    ================================= */
+
+    setTarget(
+      defaultSelected,
+      true
+    );
+
+  </script>
 
 </body>
 </html>
